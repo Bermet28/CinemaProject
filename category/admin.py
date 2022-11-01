@@ -3,4 +3,4 @@ from django.contrib.admin import site
 
 from category.models import Category
 
-site.admin.register(Category)
+admin.site.register(Category)

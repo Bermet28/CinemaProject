@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     # my_apps
     'account',
     'chat',
-    'movie'
+    'movie',
+    'category',
+    'post',
 
 ]
 
