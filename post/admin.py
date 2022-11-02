@@ -13,4 +13,4 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [PostImageInline]
 
 
-admin.site.register(Post)
+# admin.site.register(Post)
