@@ -1,8 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import FileExtensionValidator
 from django.db import models
 
 from category.models import Category
 from account.models import CustomUser
+from embed_video.fields import EmbedVideoField
 
 
 # User = get_user_model()
@@ -13,14 +15,19 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
-    created_ad = models.DateTimeField()
-    image = models.ImageField(upload_to='gallery')
+    video = EmbedVideoField(null=True)
+
+    # image = models.ImageField(upload_to='gallery/')
+    # file = models.FileField(upload_to='video/',
+    #                         validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
+
+    created_ad = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['title']
+        ordering = ['-created_ad']
 
     def __str__(self):
-        return f'title: {self.title} {self.description} '
+        return f'title: {self.title} {self.category} '
 
 
 class PostImage(models.Model):

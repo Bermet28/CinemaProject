@@ -13,11 +13,12 @@ class Category(models.Model):
     descriptions = models.TextField()
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return self.title
+
 
 @receiver(pre_save, sender=Category)
 def category_pre_save(sender, instance, *args, **kwargs):

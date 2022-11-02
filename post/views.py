@@ -1,9 +1,12 @@
+from django.shortcuts import render, get_object_or_404
 from rest_framework import permissions, response, generics, viewsets
-from rest_framework.viewsets import ModelViewSet
-from rest_framework.decorators import action
-from .models import *
-from . import serializers
+# from rest_framework.viewsets import ModelViewSet
+# from rest_framework.decorators import action
+# from . models import Post
+#
+# from . import serializers
 from .serializers import *
+
 
 
 #
@@ -39,9 +42,23 @@ from .serializers import *
 #
 
 
+
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostListSerializer
+
+
+def index(request):
+    videos = Post.objects.all()
+    return render(request, 'videos/index.html', context={'videos': videos})
+
+    # def get_list_video(request):
+    #     return render(request, 'video_hosting/home.html', {'video_list': Post.objects.all()})
+    #
+    # def get_video(request, pk: int):
+    #     _video = get_object_or_404(Post, id=pk)
+    #     return render(request, 'video_hosting/home.html', {'video': _video})
+
 
 
 class PostImageView(generics.ListAPIView):
