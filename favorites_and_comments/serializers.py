@@ -8,23 +8,23 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('owner', 'body', 'music')
+        fields = '__all__'
 
 
-class MusicSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ('id', 'name', 'track', 'image',)
+        fields = '__all__'
 
 
 class FavoritesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Favorites
-        fields = ('music',)
+        fields = '__all__'
 
     def to_representation(self, instance):
         repr = super().to_representation(instance)
-        repr['music'] = MusicSerializer(instance.music).data
+        repr['movie'] = PostSerializer(instance.post).data
         return repr
 
 
@@ -33,7 +33,7 @@ class CommentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ('id', 'owner', 'music',)
+        fields = '__all__'
 
 
 class CommentDetailSerializer(serializers.ModelSerializer):
