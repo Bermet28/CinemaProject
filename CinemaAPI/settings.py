@@ -36,11 +36,14 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'django_celery_beat',
+    'embed_video',
 
     # my_apps
     'account',
     'chat',
-    'movie'
+    'post',
+    'category',
+
 
 ]
 

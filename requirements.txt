@@ -30,3 +30,5 @@ urllib3==1.26.12
 gunicorn==20.1.0
 django-cors-headers
 celery
+django-celery-beat
+django-embed-video
