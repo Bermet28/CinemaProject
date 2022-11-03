@@ -16,11 +16,6 @@ class Post(models.Model):
     title = models.CharField(max_length=50, unique=True)
     description = models.TextField()
     video = EmbedVideoField(null=True)
-
-    # image = models.ImageField(upload_to='gallery/')
-    # file = models.FileField(upload_to='video/',
-    #                         validators=[FileExtensionValidator(allowed_extensions=['mp4'])])
-
     created_ad = models.DateTimeField(auto_now_add=True)
 
     class Meta:

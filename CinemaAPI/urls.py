@@ -12,7 +12,8 @@ router.register('posts', PostViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/api/', include(router.urls)),
-    path('v1/api/', include('category.urls'))
+    path('v1/api/', include('category.urls')),
+    path('api1/v1/accounts/', include('account.urls') )
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

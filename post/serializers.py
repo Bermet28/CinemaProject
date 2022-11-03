@@ -9,7 +9,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'description', 'category', 'video')
+        fields = ('title', 'description', 'category', 'video', 'created_ad')
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
