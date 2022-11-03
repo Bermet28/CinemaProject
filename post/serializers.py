@@ -21,3 +21,9 @@ class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
         models = PostImage
         fields = '__all__'
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Like
+        fields = '__all__'
