@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'chat',
     'post',
     'category',
+    'favorites_and_comments',
 
 
 ]

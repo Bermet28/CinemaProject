@@ -2,6 +2,7 @@
 #
 # from django.contrib.auth import get_user_model
 # from django.core.validators import FileExtensionValidator
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from account.models import CustomUser
@@ -9,8 +10,7 @@ from embed_video.fields import EmbedVideoField
 
 from category.models import Category
 
-
-# User = get_user_model()
+User = get_user_model()
 
 
 class Post(models.Model):
@@ -36,3 +36,18 @@ class PostImage(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
 
 
+class Like(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
+
+    class Meta:
+        unique_together = ['post', 'owner']
+
+    def __str__(self):
+        return f'{self.post} -> {self.owner}'
+# class Like(models.Model):
+#     user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+#     post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+#
+#     def __str__(self):
+#         return f"Like ({self.user.username}) => {self.post.title}"
