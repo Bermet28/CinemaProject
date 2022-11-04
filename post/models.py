@@ -18,7 +18,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.SET_NULL, null=True)
     genre = models.ForeignKey(Genre, related_name='genres', on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=50, unique=True)
-    director = models.CharField(max_length=50, unique=True, blank=True)
+    director = models.CharField(max_length=50, blank=True)
     description = models.TextField()
     video = EmbedVideoField(null=True)
     created_ad = models.DateTimeField(auto_now_add=True)
