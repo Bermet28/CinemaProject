@@ -62,9 +62,10 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    @property
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
-            return [permissions.IsAuthenticated(), IsAuthor()]
+            return [IsAuthor,]
         elif self.action in ('create', 'add_to_liked', 'remove_from_liked', 'favorite_action'):
             return [permissions.IsAuthenticated()]
         else:
