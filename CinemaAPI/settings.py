@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     # inst apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
     'post',
     'category',
     'favorites_and_comments',
+    'media',
 
 
 ]
