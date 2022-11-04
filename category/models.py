@@ -28,3 +28,14 @@ def category_pre_save(sender, instance, *args, **kwargs):
         instance.slug = slugify(instance.name)
 
 
+class Genre(models.Model):
+    slug = models.SlugField(max_length=100,)
+    title = models.SlugField(max_length=100, primary_key=True)
+    category = models.ForeignKey(Category, related_name='genre', on_delete=models.PROTECT, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title
