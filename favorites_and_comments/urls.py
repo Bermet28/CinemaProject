@@ -6,9 +6,8 @@ from .views import CommentListCreateView
 
 router = DefaultRouter()
 
-
-urlpatterns =[
-    path('',  include(router.urls)),
+urlpatterns = [
+    path('', include(router.urls)),
     path('comments/', CommentListCreateView.as_view()),
     path('comments/<int:pk>/', views.CommentDetailView.as_view()),
     path('favorites/', views.FavoritesListCreateView.as_view()),
