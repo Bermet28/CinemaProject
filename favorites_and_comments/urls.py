@@ -12,6 +12,6 @@ urlpatterns =[
     path('comments/', CommentListCreateView.as_view()),
     path('comments/<int:pk>/', views.CommentDetailView.as_view()),
     path('favorites/', views.FavoritesListCreateView.as_view()),
-    path('favorites/<int:pk>/', views.CommentDetailView.as_view()),
+    path('favorites/<int:pk>/', views.FavoritesDetailView.as_view()),
 
 ]
