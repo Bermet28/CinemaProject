@@ -29,7 +29,7 @@ class CommentDeleteView(generics.DestroyAPIView):
 
 
 class FavoritesListCreateView(generics.ListCreateAPIView):
-    queryset = Comment.objects.all()
+    queryset = Favorites.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (IsAuthor,)
 
@@ -38,6 +38,12 @@ class FavoritesListCreateView(generics.ListCreateAPIView):
 
 
 class FavoritesDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Comment.objects.all()
+    queryset = Favorites.objects.all()
     serializer_class = serializers.CommentSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly, IsAuthor)
+
+
+class FavoritesDeleteView(generics.DestroyAPIView):
+    queryset = Favorites.objects.all()
+    serializer_class = serializers.CommentSerializer
+    permission_classes = (IsAuthor,)
