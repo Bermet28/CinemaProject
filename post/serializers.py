@@ -19,7 +19,7 @@ class PostListSerializer(serializers.ModelSerializer):
 
 class PostImageSerializer(serializers.ModelSerializer):
     class Meta:
-        models = PostImage
+        model = PostImage
         fields = '__all__'
 
 

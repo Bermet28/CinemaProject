@@ -1,53 +1,15 @@
 from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from rest_framework import permissions, response, generics, viewsets, status
+from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
 from post.models import Post, PostImage, Like
-
-# from rest_framework.viewsets import ModelViewSet
-# from rest_framework.decorators import action
-# from . models import Post
-#
-# from . import serializers
-
-from post.serializers import LikeSerializer, PostListSerializer, PostImageSerializer
-
-
-#
-# class PostViewSet(ModelViewSet):
-#     queryset = Post.objects.all()
-#
-#     def get_serializer_class(self):
-#         if self.action == 'list':
-#             return serializers.PostListSerializer
-#         return serializers.PostDetailSerializer
-#
-#     def get_permissions(self):
-#         if self.action in ('update', 'partial_update', 'destroy'):
-#             return [permissions.IsAuthenticated()]
-#         return [permissions.IsAuthenticatedOrReadOnly()]
-#
-#     def perform_create(self, serializer):
-#         serializer.save(owner=self.request.user)
-#
-#     # api/v1/products/<id>/reviews/
-#     @action(['GET', 'POST'], detail=True)
-#     def reviews(self, request, pk):
-#         post = self.get_object()
-#         if request.method == 'GET':
-#             reviews = post.reviews.all()
-#         elif post.reviews.filter(owner=request.user).exists():
-#             return response.Response('Вы уже оставляли отзыв!!', status=400)
-#         data = request.data
-#         # serializer = ReviewSerializer(data=data)
-#         # serializer.is_valid(raise_exception=True)
-#         # serializer.save(owner=request.user, product=product)
-#         # return response.Response(serializer.data, status=201)
-#
+from post.serializers import PostListSerializer, PostImageSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -62,10 +24,10 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @property
+
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
-            return [IsAuthor,]
+            return [permissions.IsAuthenticated(), IsAuthor()]
         elif self.action in ('create', 'add_to_liked', 'remove_from_liked', 'favorite_action'):
             return [permissions.IsAuthenticated()]
         else:

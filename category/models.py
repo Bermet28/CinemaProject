@@ -22,14 +22,8 @@ class Category(models.Model):
         return self.title
 
 
-@receiver(pre_save, sender=Category)
-def category_pre_save(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        instance.slug = slugify(instance.name)
-
-
 class Genre(models.Model):
-    slug = models.SlugField(max_length=100,)
+    slug = models.SlugField(max_length=100, )
     title = models.SlugField(max_length=100, primary_key=True)
     category = models.ForeignKey(Category, related_name='genre', on_delete=models.PROTECT, null=True)
 
