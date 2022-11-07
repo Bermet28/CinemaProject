@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'category',
     'favorites_and_comments',
     'media',
+    'rating',
 
 
 ]

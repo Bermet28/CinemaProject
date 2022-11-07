@@ -2,11 +2,11 @@
 # from multiprocessing.context import SpawnContext
 # from pyexpat import model
 from rest_framework import serializers
-from .models import Category
+from .models import Category, Genre
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    slug = serializers.ReadOnlyField()
+    title = serializers.ReadOnlyField()
 
     class Meta:
         model = Category
@@ -14,8 +14,8 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class GenreSerializer(serializers.ModelSerializer):
-    slug = serializers.ReadOnlyField()
+    title = serializers.ReadOnlyField()
 
     class Meta:
-        model = Category
+        model = Genre
         fields = '__all__'
