@@ -9,5 +9,7 @@ router.register('genres', GenreViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('/<int:pk>/', include(router.urls)),
     path('', include(router.urls)),
+    path('/<int:pk>/', include(router.urls)),
 ]

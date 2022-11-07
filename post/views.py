@@ -1,15 +1,16 @@
 from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets, status, generics
+from rest_framework import viewsets, status, generics, response
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
-from post.models import Post, PostImage, Like
-from post.serializers import PostListSerializer, PostImageSerializer
+from post.models import Post, Like, Director
+from post.serializers import PostListSerializer, DirectorSerializer
+from rating.serializers import ReviewSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -24,7 +25,6 @@ class PostViewSet(viewsets.ModelViewSet):
         serializer = PostListSerializer(queryset, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
     def get_permissions(self):
         if self.action in ('update', 'partial_update', 'destroy'):
             return [permissions.IsAuthenticated(), IsAuthor()]
@@ -35,6 +35,30 @@ class PostViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+    @action(['GET', 'POST'], detail=True)
+    def reviews(self, request, pk):
+        product = self.get_object()
+        if request.method == 'GET':
+            reviews = product.reviews.all()
+            serializer = ReviewSerializer(reviews, many=True)
+            return response.Response(serializer.data, status=200)
+        if product.reviews.filter(owner=request.user).exists():
+            return response.Response('Вы уже оставляли отзыв!!', status=400)
+        data = request.data
+        serializer = ReviewSerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(owner=request.user, product=product)
+        return response.Response(serializer.data, status=201)
+
+    @action(['DELETE'], detail=True)
+    def remove_from_reviews(self, request, pk):
+        movie = self.get_object()
+        user = request.user
+        if not user.review.filter(movie=movie).exists():
+            return Response('You are not Review This Movie!', status=400)
+        user.review.filter(movie=movie).delete()
+        return Response('Your Review is Deleted!', status=204)
 
     @action(['POST'], detail=True)
     def add_to_liked(self, request, pk):
@@ -67,17 +91,16 @@ def index(request):
     videos = Post.objects.all()
     return render(request, 'videos/index.html', context={'videos': videos})
 
-    # def get_list_video(request):
-    #     return render(request, 'video_hosting/home.html', {'video_list': Post.objects.all()})
-    #
-    # def get_video(request, pk: int):
-    #     _video = get_object_or_404(Post, id=pk)
-    #     return render(request, 'video_hosting/home.html', {'video': _video})
+
+# class PostImageView(generics.ListAPIView):
+#     queryset = PostImage.objects.all()
+#     serializer_class = PostImageSerializer
+#
+#     def get_serializer_context(self):
+#         return {'request': self.request}i
+
+class DirectorView(viewsets.ModelViewSet):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
 
 
-class PostImageView(generics.ListAPIView):
-    queryset = PostImage.objects.all()
-    serializer_class = PostImageSerializer
-
-    def get_serializer_context(self):
-        return {'request': self.request}
