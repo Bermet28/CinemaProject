@@ -3,6 +3,8 @@ from post.models import *
 from embed_video.admin import AdminVideoMixin
 
 
+
+
 class PostImageInline(admin.TabularInline):
     model = PostImage
     max_num = 10
@@ -12,6 +14,7 @@ class PostImageInline(admin.TabularInline):
 @admin.register(Post)
 class PostAdmin(AdminVideoMixin, admin.ModelAdmin):
     inlines = [PostImageInline]
+
 
 
 # class AdminVideo(AdminVideoMixin, admin.ModelAdmin):

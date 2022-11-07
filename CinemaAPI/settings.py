@@ -21,6 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+
     # inst apps
     'rest_framework',
     'rest_framework_simplejwt',
@@ -30,12 +32,17 @@ INSTALLED_APPS = [
     'embed_video',
 
 
+
     # my_apps
     'account',
     'chat',
-    'movie',
+    'movieRecommender',
     'category',
     'post',
+    'notify'
+
+
+
 
 ]
 
@@ -49,7 +56,40 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'console': {
+            'format': '{module} {asctime} {levelname} {filename} {message}',
+            'style': '{'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'WARNING',
+            'class': 'logging.StreamHandler',
+            'formatter': 'console',
+        },
+        'file': {
+            "class": "logging.FileHandler",
+            "formatter": "console",
+            'filename': 'information.log',
+        },
+
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+
+    },
+}
+
 ROOT_URLCONF = 'CinemaAPI.urls'
+
 
 TEMPLATES = [
     {
@@ -62,13 +102,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = 'CinemaAPI.wsgi.application'
-
 
 DATABASES = {
     'default': {
@@ -133,7 +173,10 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated'
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS':
+        ['django_filters.rest_framework.DjangoFilterBackend']
+
 }
 
 SIMPLE_JWT = {
@@ -178,3 +221,6 @@ CELERY_RESULT_SERIALIZER = 'json'
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = True
+
+
+

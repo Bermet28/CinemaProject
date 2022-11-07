@@ -63,3 +63,4 @@ class CustomUser(AbstractUser):
 
 class Spam_Contacts(models.Model):
     email = models.EmailField('email address', unique=True)
+

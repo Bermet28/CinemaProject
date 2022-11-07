@@ -8,6 +8,7 @@ from rest_framework.generics import GenericAPIView
 from . import serializers
 from .send_email import send_confirmation_email, send_code_password_reset
 from django.contrib.auth import get_user_model
+import logging
 
 
 User = get_user_model()
@@ -95,4 +96,12 @@ class FollowSpamApi(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(email=request.user.email)
         return Response('Followed to spam!', 201)
+
+
+logger = logging.getLogger('console')
+
+
+def Login_view(request):
+    logger.debug('hello')
+    return HttpResponse("<h1> Test </h1>")
 
