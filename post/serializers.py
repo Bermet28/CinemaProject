@@ -17,10 +17,10 @@ class LikeSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DirectorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Director
-        fields = '__all__'
+# class DirectorSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Director
+#         fields = '__all__'
 
 
 class NotificationSerializer(serializers.ModelSerializer):

@@ -11,8 +11,8 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
-from post.models import Post, Like, Director, Notification
-from post.serializers import PostListSerializer, DirectorSerializer
+from post.models import Post, Like, Notification
+from post.serializers import PostListSerializer
 from rating.serializers import ReviewSerializer
 
 
@@ -112,9 +112,9 @@ def index(request):
 #     def get_serializer_context(self):
 #         return {'request': self.request}i
 
-class DirectorView(viewsets.ModelViewSet):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
+# class DirectorView(viewsets.ModelViewSet):
+#     queryset = Director.objects.all()
+#     serializer_class = DirectorSerializer
 
 
 def ShowNotifications(request):

@@ -9,13 +9,13 @@ from category.models import Category, Genre
 User = get_user_model()
 
 
-class Director(models.Model):
-    name = models.CharField('name', max_length=100)
-    description = models.TextField('description', blank=True)
-    image = models.ImageField('image', upload_to='directors/')
-
-    def __str__(self):
-        return self.name
+# class Director(models.Model):
+#     name = models.CharField('name', max_length=100)
+#     description = models.TextField('description', blank=True)
+#     image = models.ImageField('image', upload_to='directors/')
+#
+#     def __str__(self):
+#         return self.name
 
 
 class Post(models.Model):
@@ -23,7 +23,8 @@ class Post(models.Model):
     category = models.ForeignKey(Category, related_name='posts', on_delete=models.SET_NULL, null=True)
     genre = models.ManyToManyField(Genre, related_name='genres', blank=True)
     title = models.CharField(max_length=50, unique=True)
-    director = models.ManyToManyField(Director, blank=True)
+    director = models.CharField(max_length=100, null=True)
+    director_image = models.ImageField('director', upload_to='directors', null=True)
     description = models.TextField()
     video = EmbedVideoField(null=True)
     created_ad = models.DateTimeField(auto_now_add=True)

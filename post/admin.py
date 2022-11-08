@@ -22,7 +22,7 @@ class PostAdmin(AdminVideoMixin, admin.ModelAdmin):
 
 # admin.site.register(AdminVideo)
 admin.site.register(Like)
-admin.site.register(Director)
+# admin.site.register(Director)
 # admin.site.register(Post)
 admin.site.register(Notification)
 # admin.site.register(PostImage)
