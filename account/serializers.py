@@ -1,3 +1,7 @@
+from abc import ABC
+
+from rest_framework.fields import CharField
+from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework import serializers
@@ -93,6 +97,7 @@ class RestorePasswordSerializer(serializers.Serializer):
         user.save()
         return
 
+
 class SpamViewSerializer(serializers.ModelSerializer):
     email = serializers.ReadOnlyField()
 
@@ -107,3 +112,5 @@ class SpamViewSerializer(serializers.ModelSerializer):
                 'You are already followed to spam!!'
             )
         return attrs
+
+

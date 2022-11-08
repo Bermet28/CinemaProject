@@ -1,13 +1,9 @@
-# from django.db import models
-#
-# from django.contrib.auth import get_user_model
-# from django.core.validators import FileExtensionValidator
+from django.conf import settings
+from django.db.models.signals import post_save, post_delete
 from django.contrib.auth import get_user_model
 from django.db import models
-
 from account.models import CustomUser
 from embed_video.fields import EmbedVideoField
-
 from category.models import Category, Genre
 
 # from rating.models import Rating
@@ -47,12 +43,55 @@ class Post(models.Model):
 #     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='images')
 
 
+class Notification(models.Model):
+    NOTIFICATION_TYPES = ((1, 'like'), (2, 'Comment'), (3, 'Follow'))
+    post = models.ForeignKey('post.Post', on_delete=models.CASCADE, related_name='noti_post', blank=True, null=True)
+    sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='noti_from_user', null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='noti_to_user', null=True)
+    notification_type = models.IntegerField(choices=NOTIFICATION_TYPES, null=True)
+    text_preview = models.CharField(max_length=90, blank=True, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+    is_seen = models.BooleanField(default=False)
+
+
 class Like(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_like')
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='post_likes')
 
     class Meta:
         unique_together = ['post', 'owner']
 
     def __str__(self):
         return f'{self.post} -> {self.owner}'
+
+    def user_liked_posts(sender, instance, *args, **kwargs):
+        like = instance
+        post = like.post
+        sender = like.owner
+
+        notify = Notification(post=post, sender=sender, user=post.owner, notification_type=1)
+        notify.save()
+
+    def user_unlike_post(sender, instance, *args, **kwargs):
+        like = instance
+        post = like.post
+        sender = like.owner
+        notify = Notification.objects.filter(post=post, sender=sender, notification_type=1)
+        notify.delete()
+
+
+post_save.connect(Like.user_liked_posts, sender=Like)
+post_delete.connect(Like.user_unlike_post, sender=Like)
+
+
+
+
+# class Like(models.Model):
+#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
+#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
+#
+#     class Meta:
+#         unique_together = ['post', 'owner']
+#
+#     def __str__(self):
+#         return f'{self.post} -> {self.owner}'

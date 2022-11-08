@@ -24,4 +24,5 @@ from embed_video.admin import AdminVideoMixin
 admin.site.register(Like)
 admin.site.register(Director)
 admin.site.register(Post)
+admin.site.register(Notification)
 # admin.site.register(PostImage)
