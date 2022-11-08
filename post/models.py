@@ -23,7 +23,7 @@ class Post(models.Model):
         ordering = ['-created_ad']
 
     def __str__(self):
-        return f'title: {self.title} {self.category} '
+        return f'title: {self.title} category: {self.category} '
 
 
 class PostImage(models.Model):

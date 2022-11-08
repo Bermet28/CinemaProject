@@ -1,5 +1,5 @@
 from django.db import models
-from django.conf import settings
+
 from django.db.models.signals import post_save, post_delete
 from account.models import CustomUser
 from post.models import Post
@@ -12,7 +12,7 @@ class Notification(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='noti_to_user', null=True)
     notification_type = models.IntegerField(choices=NOTIFICATION_TYPES, null=True)
     text_preview = models.CharField(max_length=90, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True , null=True)
     is_seen = models.BooleanField(default=False)
 
 
