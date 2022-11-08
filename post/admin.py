@@ -11,9 +11,9 @@ from embed_video.admin import AdminVideoMixin
 #     min_num = 1
 
 
-# @admin.register(Post)
-# class PostAdmin(AdminVideoMixin, admin.ModelAdmin):
-#     inlines = [PostImageInline]
+@admin.register(Post)
+class PostAdmin(AdminVideoMixin, admin.ModelAdmin):
+    pass
 
 
 # class AdminVideo(AdminVideoMixin, admin.ModelAdmin):
@@ -22,7 +22,7 @@ from embed_video.admin import AdminVideoMixin
 
 # admin.site.register(AdminVideo)
 admin.site.register(Like)
-admin.site.register(Director)
-admin.site.register(Post)
+# admin.site.register(Director)
+# admin.site.register(Post)
 admin.site.register(Notification)
 # admin.site.register(PostImage)

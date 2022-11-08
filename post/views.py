@@ -5,14 +5,25 @@ from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from rest_framework import viewsets, status, generics, response
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 
 from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
-from post.models import Post, Like, Director, Notification
-from post.serializers import PostListSerializer, DirectorSerializer
+from post.models import Post, Like, Notification
+from post.serializers import PostListSerializer
 from rating.serializers import ReviewSerializer
+
+
+class MyPaginationClass(PageNumberPagination):
+    page_size = 100
+
+    def get_paginated_response(self, data):
+        for i in range(self.page_size):
+            text = data[i]['text']
+            data[i]['text'] = text[:15] + '....'
+        return super().get_paginated_response(data)
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -101,9 +112,10 @@ def index(request):
 #     def get_serializer_context(self):
 #         return {'request': self.request}i
 
-class DirectorView(viewsets.ModelViewSet):
-    queryset = Director.objects.all()
-    serializer_class = DirectorSerializer
+# class DirectorView(viewsets.ModelViewSet):
+#     queryset = Director.objects.all()
+#     serializer_class = DirectorSerializer
+
 
 def ShowNotifications(request):
     user = request.user
@@ -114,6 +126,6 @@ def ShowNotifications(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def auth(request):
     return render(request, 'oauth.html')
-
