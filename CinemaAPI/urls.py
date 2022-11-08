@@ -21,6 +21,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
 from CinemaAPI import settings
+from post.views import auth
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -44,6 +45,9 @@ urlpatterns = [
     path('api/v1/category/', include('category.urls')),
     path('api/v1/posts/', include('post.urls')),
     path('api/v1/comments-favorites/', include('favorites_and_comments.urls')),
+    # path('oauth/', include('social_django.urls', namespace='social')),  # <-- here
+    path('', include('social_django.urls', namespace='social')),
+    path('auth/', auth),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

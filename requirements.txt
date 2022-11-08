@@ -8,6 +8,7 @@ Django==4.1.2
 django-filter==22.1
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.2.1
+django-rest-framework-social-oauth2
 drf-yasg==1.21.4
 idna==3.4
 inflection==0.5.1
@@ -32,3 +33,15 @@ django-cors-headers
 celery
 django-celery-beat
 django-embed-video
+facebook-sdk==3.1.0
+Faker==4.1.0
+future==0.18.2
+google-api-core==1.22.2
+google-api-python-client
+google-auth
+google-auth-httplib2
+googleapis-common-protos
+oauthlib
+python-twitter
+requests
+requests-oauthlib

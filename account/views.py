@@ -1,15 +1,17 @@
+
 from django.shortcuts import render
 from django.shortcuts import render
 from django.http import HttpResponse
-from rest_framework import permissions
+from requests import HTTPError
+from rest_framework import permissions, generics, status
 from rest_framework.response import Response
+from rest_framework.settings import api_settings
 from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.generics import GenericAPIView
 from . import serializers
 from .send_email import send_confirmation_email, send_code_password_reset
-from django.contrib.auth import get_user_model
-
+from django.contrib.auth import get_user_model, login
 
 User = get_user_model()
 
@@ -99,3 +101,6 @@ class FollowSpamApi(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save(email=request.user.email)
         return Response('Followed to spam!', 201)
+
+
+

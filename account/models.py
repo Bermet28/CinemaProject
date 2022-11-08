@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 # Create your models here.
@@ -34,6 +35,10 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have status is_superuser=True!')
         return self._create_user(email, password, **kwargs)
 
+#
+# AUTH_PROVIDERS = {'facebook': 'facebook', 'google': 'google',
+#                   'twitter': 'twitter', 'email': 'email'}
+
 
 class CustomUser(AbstractUser):
     email = models.EmailField('email address', unique=True)
@@ -48,7 +53,9 @@ class CustomUser(AbstractUser):
                                         'Designates whether this user should be treted as active.'
                                         'Unselect this instead of deleting accounts.'
                                     ))
-
+    # auth_provider = models.CharField(
+    #     max_length=255, blank=True,
+    #     null=True, default=AUTH_PROVIDERS.get('email'))
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
@@ -61,6 +68,13 @@ class CustomUser(AbstractUser):
         import uuid
         code = str(uuid.uuid4())
         self.activation_code = code
+
+    # def tokens(self):
+    #     refresh = RefreshToken.for_user(self)
+    #     return {
+    #         'refresh': str(refresh),
+    #         'access': str(refresh.access_token)
+    #     }
 
 
 class Spam_Contacts(models.Model):

@@ -1,6 +1,8 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.template import loader
 from rest_framework import viewsets, status, generics, response
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -8,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
-from post.models import Post, Like, Director
+from post.models import Post, Like, Director, Notification
 from post.serializers import PostListSerializer, DirectorSerializer
 from rating.serializers import ReviewSerializer
 
@@ -103,4 +105,15 @@ class DirectorView(viewsets.ModelViewSet):
     queryset = Director.objects.all()
     serializer_class = DirectorSerializer
 
+def ShowNotifications(request):
+    user = request.user
+    notifications = Notification.objects.filter(user=user).order_by('-date')
+    template = loader.get_template('notification.html')
+    context = {
+        'notifications': notifications,
+    }
+    return HttpResponse(template.render(context, request))
+
+def auth(request):
+    return render(request, 'oauth.html')
 
