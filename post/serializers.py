@@ -10,17 +10,6 @@ class PostListSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
-    # def to_representation(self, instance):
-    #     representation = super().to_representation(instance)
-    #     representation['images'] = PostImageSerializer(instance.images.all(), many=True, context=self.context).data
-    #     return representation
-
-
-# class PostImageSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = PostImage
-#         fields = '__all__'
-
 
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:

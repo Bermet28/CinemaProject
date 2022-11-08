@@ -66,37 +66,37 @@ MIDDLEWARE = [
     'social_django.middleware.SocialAuthExceptionMiddleware',  # <-- Here
 ]
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'console': {
-            'format': '{module} {asctime} {levelname} {filename} {message}',
-            'style': '{'
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'WARNING',
-            'class': 'logging.StreamHandler',
-            'formatter': 'console',
-        },
-        'file': {
-            "class": "logging.FileHandler",
-            "formatter": "console",
-            'filename': 'information.log',
-        },
-
-    },
-    'loggers': {
-        'django.db.backends': {
-            'handlers': ['console', 'file'],
-            'level': 'DEBUG',
-            'propagate': True
-        },
-
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'formatters': {
+#         'console': {
+#             'format': '{module} {asctime} {levelname} {filename} {message}',
+#             'style': '{'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'WARNING',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'console',
+#         },
+#         'file': {
+#             "class": "logging.FileHandler",
+#             "formatter": "console",
+#             'filename': 'information.log',
+#         },
+#
+#     },
+#     'loggers': {
+#         'django.db.backends': {
+#             'handlers': ['console', 'file'],
+#             'level': 'DEBUG',
+#             'propagate': True
+#         },
+#
+#     },
+# }
 
 ROOT_URLCONF = 'CinemaAPI.urls'
 

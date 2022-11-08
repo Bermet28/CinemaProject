@@ -6,8 +6,6 @@ from account.models import CustomUser
 from embed_video.fields import EmbedVideoField
 from category.models import Category, Genre
 
-# from rating.models import Rating
-
 User = get_user_model()
 
 
@@ -82,9 +80,6 @@ class Like(models.Model):
 
 post_save.connect(Like.user_liked_posts, sender=Like)
 post_delete.connect(Like.user_unlike_post, sender=Like)
-
-
-
 
 # class Like(models.Model):
 #     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
