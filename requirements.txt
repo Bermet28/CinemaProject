@@ -30,9 +30,9 @@ uritemplate==4.1.1
 urllib3==1.26.12
 gunicorn==20.1.0
 django-cors-headers
-celery
+celery~=5.2.7
 django-celery-beat
-django-embed-video
+django-embed-video~=1.4.7
 facebook-sdk==3.1.0
 Faker==4.1.0
 future==0.18.2
@@ -45,3 +45,4 @@ oauthlib
 python-twitter
 requests
 requests-oauthlib
+pandas~=1.5.1

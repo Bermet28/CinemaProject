@@ -1,19 +1,20 @@
-from django.http import HttpResponse
-from django.shortcuts import render
-from django.db.models import Q
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, redirect
+from django.db.models import Q, Case, When
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
+from django.views.generic import ListView
 from rest_framework import viewsets, status, generics, response
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-
 from rest_framework import permissions
 from account.permissions import IsAuthor
 from post import serializers
 from post.models import Post, Like, Notification
 from post.serializers import PostListSerializer
 from rating.serializers import ReviewSerializer
+# import pandas as pd
 
 
 class MyPaginationClass(PageNumberPagination):
@@ -105,18 +106,6 @@ def index(request):
     return render(request, 'videos/index.html', context={'videos': videos})
 
 
-# class PostImageView(generics.ListAPIView):
-#     queryset = PostImage.objects.all()
-#     serializer_class = PostImageSerializer
-#
-#     def get_serializer_context(self):
-#         return {'request': self.request}i
-
-# class DirectorView(viewsets.ModelViewSet):
-#     queryset = Director.objects.all()
-#     serializer_class = DirectorSerializer
-
-
 def ShowNotifications(request):
     user = request.user
     notifications = Notification.objects.filter(user=user).order_by('-date')
@@ -129,3 +118,64 @@ def ShowNotifications(request):
 
 def auth(request):
     return render(request, 'oauth.html')
+
+
+class GenreYear:
+    def get_genres(self):
+        # нужно вместо поста прописать жанр
+        return Post.objects.all()
+        # нужно вместо пост прописать фильм
+
+    def get_years(self):
+        return Post.objects.filter(draft=False).values('created_ad')
+
+
+class FilterView(GenreYear, ListView):
+    def get_request(self):
+        queryset = Post.objects.filter(
+            Q(year__in=self.request.GET.get('created_ad')) |
+            Q(genres__in=self.request.GET.get('title'))
+        )
+        return queryset
+
+# def get_similar(movie_name, rating, corr_matrix):
+#     similar_ratings = corr_matrix[movie_name] * (rating - 2.5)
+#     similar_ratings = similar_ratings.sort_values(ascending=False)
+#     return similar_ratings
+#
+#
+# def recommend(request):
+#     if not request.user.is_authenticated:
+#         return redirect("login")
+#     if not request.user.is_active:
+#         raise Http404
+#
+#     movie_rating = pd.DataFrame(list(Myrating.objects.all().values()))
+#
+#     new_user = movie_rating.user_id.unique().shape[0]
+#     current_user_id = request.user.id
+#     # if new user not rated any movie
+#     if current_user_id > new_user:
+#         movie = Post.objects.get(id=19)
+#         q = Myrating(user=request.user, movie=movie, rating=0)
+#         q.save()
+#
+#     user_ratings = movie_rating.pivot_table(index=['user_id'], columns=['movie_id'], values='rating')
+#     user_ratings = user_ratings.fillna(0, axis=1)
+#     corr_matrix = user_ratings.corr(method='pearson')
+#
+#     user = pd.DataFrame(list(Myrating.objects.filter(user=request.user).values())).drop(['user_id', 'id'], axis=1)
+#     user_filtered = [tuple(x) for x in user.values]
+#     movie_id_watched = [each[0] for each in user_filtered]
+#
+#     similar_movies = pd.DataFrame()
+#     for movie, rating in user_filtered:
+#         similar_movies = similar_movies.append(get_similar(movie, rating, corr_matrix), ignore_index=True)
+#
+#     movies_id = list(similar_movies.sum().sort_values(ascending=False).index)
+#     movies_id_recommend = [each for each in movies_id if each not in movie_id_watched]
+#     preserved = Case(*[When(pk=pk, then=pos) for pos, pk in enumerate(movies_id_recommend)])
+#     movie_list = list(Post.objects.filter(id__in=movies_id_recommend).order_by(preserved)[:10])
+#
+#     context = {'movie_list': movie_list}
+#     return render(request, 'recommend/recommend.html', context)

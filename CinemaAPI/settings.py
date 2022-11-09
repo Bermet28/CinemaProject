@@ -44,13 +44,13 @@ INSTALLED_APPS = [
 
     # my_apps
     'account',
-    'chat',
     'post',
     'category',
     'favorites_and_comments',
     'media',
     'rating',
     'social_auth',
+    'order',
 
 ]
 

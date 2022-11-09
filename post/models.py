@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.signals import post_save, post_delete
 from django.contrib.auth import get_user_model
 from django.db import models
@@ -82,12 +83,5 @@ class Like(models.Model):
 post_save.connect(Like.user_liked_posts, sender=Like)
 post_delete.connect(Like.user_unlike_post, sender=Like)
 
-# class Like(models.Model):
-#     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='likes')
-#     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='liked')
-#
-#     class Meta:
-#         unique_together = ['post', 'owner']
-#
-#     def __str__(self):
-#         return f'{self.post} -> {self.owner}'
+
+
